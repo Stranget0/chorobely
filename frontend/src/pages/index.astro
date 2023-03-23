@@ -1,0 +1,9 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
+import { options } from "../mock";
+---
+
+<Layout title='Stwórz swojego chorobeła!'>
+  {options.map((card) => <Card {...card} />)}
+</Layout>

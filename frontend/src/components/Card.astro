@@ -1,0 +1,19 @@
+---
+import type { CardOptions } from "../types";
+import CardOption from "./CardOption.astro";
+
+type Props = CardOptions;
+
+const { options, bgColor, textColor, priceMod, title } = Astro.props;
+---
+
+<li
+  class={`card flex justify-between gap-1 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl min-w-min w-full max-w-max px-4 py-3 aspect-card bg-stone-400 text-center`}
+>
+  <h3 class='text w-full py-2'>{title}</h3>
+  {
+    options.map((props) => {
+      <CardOption {...props} priceMod={priceMod} />;
+    })
+  }
+</li>
