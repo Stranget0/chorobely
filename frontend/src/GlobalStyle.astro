@@ -1,0 +1,81 @@
+<style lang='scss' is:global>
+  @use "sass:list";
+  @use "sass:map";
+
+  $weights: (
+    100: "Thin",
+    200: "ExtraLight",
+    300: "Light",
+    400: "Regular",
+    500: "Medium",
+    600: "SemiBold",
+    700: "Bold",
+    800: "ExtraBold",
+    900: "Black",
+  );
+
+  $fonts: ("Libre Franklin", "Spartan");
+  $fonts-file: (
+    "Libre Franklin": "LibreFranklin",
+    "Spartan": "Spartan",
+  );
+  $fonts-italic: ("Libre Franklin");
+
+  @function get-file-style($is-italic) {
+    @if ($is-italic) {
+      @return "Italic";
+    } @else {
+      @return "";
+    }
+  }
+
+  @function get-local-file($font, $w-name, $separator, $is-italic) {
+    $suffix: get-file-style($is-italic);
+    @if ($suffix== "") {
+      @return "#{$font}#{$separator}#{$w-name}";
+    } @else {
+      @if ($separator != " ") {
+        @return "#{$font}#{$separator}#{$w-name}#{$suffix}";
+      } @else {
+        @return "#{$font}#{$separator}#{$w-name}#{$separator}#{$suffix}";
+      }
+    }
+  }
+
+  @mixin get-font-style($is-italic) {
+    @if ($is-italic) {
+      font-style: italic;
+    } @else {
+      font-style: normal;
+    }
+  }
+
+  @mixin face($font, $font-alt-name, $w-name, $w-num, $is-italic: false) {
+    @font-face {
+      $font-file: get-local-file($font-alt-name, $w-name, "-", $is-italic);
+      $font-file-alt: get-local-file($font, $w-name, " ", $is-italic);
+      $file-suffix: get-file-style($is-italic);
+
+      $file-path: "/fonts/subset-#{$font-alt-name}-#{$w-name}#{$file-suffix}";
+
+      font-family: $font;
+      src: local($font-file), local($font-file-alt),
+        url("#{$file-path}.woff2") format("woff2"),
+        url("#{$file-path}.woff") format("woff");
+
+      font-weight: $w-num;
+      font-display: fallback;
+      @include get-font-style($is-italic);
+    }
+  }
+
+  @each $font in $fonts {
+    @each $w-num, $w-name in $weights {
+      $font-alt-name: map.get($fonts-file, $font);
+      @include face($font, $font-alt-name, $w-name, $w-num);
+      @if (list.index($fonts-italic, $font)) {
+        @include face($font, $font-alt-name, $w-name, $w-num, true);
+      }
+    }
+  }
+</style>
