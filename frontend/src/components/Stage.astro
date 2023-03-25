@@ -1,0 +1,16 @@
+---
+import type { Stage } from "../types";
+import Card from "./Card.astro";
+
+type Props = Stage;
+const { options, priceMod, title } = Astro.props;
+---
+
+<div
+  class='stage absolute bottom-2 left-0 right-0 top-32 flex flex-col justify-between bg-red-200'
+>
+  <h2 class="sm:mb-auto">{title}</h2>
+  <div class='flex sm:mb-auto w-full justify-center flex-wrap gap-4 px-2'>
+    {options.map((card) => <Card {...card} priceMod={priceMod}/>)}
+  </div>
+</div>

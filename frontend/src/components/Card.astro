@@ -1,19 +1,19 @@
 ---
-import type { CardOptions } from "../types";
-import CardOption from "./CardOption.astro";
+import type { Card, Stage } from "../types";
+import getCssUrl from "../utils/getCssUrl";
 
-type Props = CardOptions;
-
-const { options, bgColor, textColor, priceMod, title } = Astro.props;
+type Props = Card & Pick<Stage, "priceMod">;
+const { id, title, value, image, priceMod } = Astro.props;
+const backgroundImage = getCssUrl(image);
 ---
 
 <li
-  class={`card flex justify-between gap-1 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-xl min-w-min w-full max-w-max px-4 py-3 aspect-card bg-stone-400 text-center`}
+  id={id}
+  style={{ backgroundImage }}
+  class='card bg-cover w-40 flex justify-items-stretch rounded-xl px-4 py-3 aspect-card bg-stone-200'
+  data-price-mod={priceMod}
+  data-value={value}
 >
-  <h3 class='text w-full py-2'>{title}</h3>
-  {
-    options.map((props) => {
-      <CardOption {...props} priceMod={priceMod} />;
-    })
-  }
+  <h3 class='w-full my-2'>{title}</h3>
+	<h4 class="price"></h4>
 </li>
