@@ -1,14 +1,30 @@
 ---
 import { stages } from "./mock";
 import Stage from "../Stage/Stage.astro";
+import Price from "../Price/Price.astro";
 ---
 
 <script>
   import { stage } from "../../utils/stages";
+  import {
+    handleNextStage,
+    initializeStage,
+    makeChoice,
+  } from "./stageProgression";
 
-  import { initializeStage } from "./stageProgression";
+  function cardHandler(card: HTMLElement) {
+    makeChoice(card.id);
+    handleNextStage(cardHandler);
+  }
 
-  if (stage.current) initializeStage(stage.current);
+  if (stage.current) {
+    initializeStage(stage.current, cardHandler);
+  }
 </script>
 
-{stages.map((props, i) => <Stage {...props} initiallyShown={i === 0} />)}
+<header>
+  <Price />
+</header>
+<main>
+  {stages.map((props, i) => <Stage {...props} initiallyShown={i === 0} />)}
+</main>

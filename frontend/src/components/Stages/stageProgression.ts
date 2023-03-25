@@ -1,19 +1,18 @@
-import { Cards } from "../Card/Cards";
+import { CardHandler, Cards } from "../Card/Cards";
 import { stage } from "../../utils/stages";
 
 const choices: string[] = [];
 
-function handleCard(card: HTMLElement) {
-  chooseCard(card.id);
-}
-
-export function initializeStage(stageElement: HTMLElement) {
+export function initializeStage(
+  stageElement: HTMLElement,
+  handleCard: CardHandler
+) {
   if (stageElement) {
     Cards.getFrom(stageElement).addHandlers("click", handleCard);
   }
 }
 
-function handleNextStage(): boolean {
+export function handleNextStage(handleCard: CardHandler): boolean {
   const oldStage = stage.current;
   if (oldStage) {
     const currentStage = stage.toNext();
@@ -26,10 +25,8 @@ function handleNextStage(): boolean {
   return false;
 }
 
-function chooseCard(id: string): boolean {
-  choices.push(id);
-  const hasNextStage = handleNextStage();
-  return hasNextStage;
+export function makeChoice(cardId: string) {
+  choices.push(cardId);
 }
 
 export function sendChoices() {

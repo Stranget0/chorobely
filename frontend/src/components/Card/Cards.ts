@@ -1,17 +1,17 @@
 import type { Card, Stage } from "../../types";
 
-type Clean = {
-  node: HTMLElement;
-  event: keyof HTMLElementEventMap;
-  listener: (event: keyof HTMLElementEventMap) => void;
-};
+// TODO: implement cleaning of listeners?
+// type Clean = {
+//   node: HTMLElement;
+//   event: keyof HTMLElementEventMap;
+//   listener: (event: keyof HTMLElementEventMap) => void;
+// };
 
 type Elements = NodeListOf<HTMLElement> | null;
 
-type CardHandler<T extends keyof HTMLElementEventMap> = (
-  card: HTMLElement,
-  e: HTMLElementEventMap[T]
-) => void;
+export type CardHandler<
+  T extends keyof HTMLElementEventMap = keyof HTMLElementEventMap
+> = (card: HTMLElement, e: HTMLElementEventMap[T]) => void;
 
 type Listener<T extends keyof HTMLElementEventMap> = (
   e: HTMLElementEventMap[T]
@@ -22,7 +22,7 @@ type CardData = Pick<Card & Stage, "value" | "priceMod">;
 export class Cards {
   elements: Elements = null;
 
-  cleanArr: Clean[] = [];
+  // cleanArr: Clean[] = [];
 
   constructor(elements: Cards["elements"]) {
     this.elements = elements;
