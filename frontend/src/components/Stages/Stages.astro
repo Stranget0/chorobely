@@ -6,19 +6,25 @@ import Price from "../Price/Price.astro";
 
 <script>
   import { stage } from "../../utils/stages";
+  import { Cards } from "../Card/Cards";
+  import { getCalculatedPrice, setPriceAmount } from "../Price/price-client";
   import {
     handleNextStage,
     initializeStage,
     makeChoice,
   } from "./stageProgression";
 
-  function cardHandler(card: HTMLElement) {
+  function stageChoiceHandler(card: HTMLElement) {
     makeChoice(card.id);
-    handleNextStage(cardHandler);
+    const { priceMod, value } = Cards.getDataFromCard(card);
+    console.log(priceMod, value);
+    setPriceAmount(getCalculatedPrice(priceMod, value));
+    const cards = handleNextStage(stageChoiceHandler);
+    cards?.updateCardPrices();
   }
 
   if (stage.current) {
-    initializeStage(stage.current, cardHandler);
+    initializeStage(stage.current, stageChoiceHandler);
   }
 </script>
 

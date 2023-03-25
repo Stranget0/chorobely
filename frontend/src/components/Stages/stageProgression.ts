@@ -8,21 +8,23 @@ export function initializeStage(
   handleCard: CardHandler
 ) {
   if (stageElement) {
-    Cards.getFrom(stageElement).addHandlers("click", handleCard);
-  }
+    const cards = Cards.getFrom(stageElement);
+    cards.addHandlers("click", handleCard);
+		cards.updateCardPrices()
+	}
 }
 
-export function handleNextStage(handleCard: CardHandler): boolean {
+export function handleNextStage(handleCard: CardHandler): Cards | null {
   const oldStage = stage.current;
   if (oldStage) {
     const currentStage = stage.toNext();
     if (currentStage) {
       const cards = Cards.getFrom(currentStage);
       cards.addHandlers("click", handleCard);
-      return true;
+      return cards;
     }
   }
-  return false;
+  return null;
 }
 
 export function makeChoice(cardId: string) {

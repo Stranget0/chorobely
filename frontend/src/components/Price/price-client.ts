@@ -10,13 +10,7 @@ export function setPriceAmount(amount: number): void {
   priceAmountElement.textContent = amount + "";
 }
 
-export function modifyPrice(mod: string, value: number) {
-  const [price, difference] = calculatePrice(mod, value);
-  setPriceAmount(price);
-  return difference;
-}
-
-export function calculatePrice(mod: string, value: number): [number, number] {
+export function getCalculatedPrice(mod: string, value: number): number {
   const currentPrice = getPriceAmount();
   let price = currentPrice;
   switch (mod) {
@@ -37,6 +31,6 @@ export function calculatePrice(mod: string, value: number): [number, number] {
       break;
     }
   }
-  return [price, currentPrice - price];
+  return price;
 }
 

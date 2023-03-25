@@ -1,4 +1,6 @@
 import type { Card, Stage } from "../../types";
+import stringify from "../../utils/stringify";
+import { getCalculatedPrice } from "../Price/price-client";
 
 // TODO: implement cleaning of listeners?
 // type Clean = {
@@ -40,27 +42,29 @@ export class Cards {
     }
   }
 
-  readCardPrice(id: string): CardData {
-    const cards = this.elements?.values() || [];
-    for (const card of cards) {
-      if (id === card.id) {
-        return this.getDataFromCard(card);
+  updateCardPrices() {
+    if (this?.elements) {
+      for (const card of this.elements) {
+        const priceElement = card.querySelector(".price");
+        if (priceElement) {
+          const { priceMod, value } = Cards.getDataFromCard(card);
+          priceElement.textContent = getCalculatedPrice(priceMod, value) + "";
+        }
       }
     }
-
-    // error handling
-    const elements = this.elements || [];
-    const ids = Array.from(elements?.values())
-      .map(({ id }) => id)
-      .join();
-    throw new Error(
-      `Couldn't read price from card id ${id}. Shown id's are ${ids}`
-    );
   }
 
-  getDataFromCard(card: HTMLElement): CardData {
-    const { priceMod = "", value: valueStr = "" } = card.dataset;
-    const value = parseFloat(valueStr) || 0;
+  static getDataFromCard(card: HTMLElement): CardData {
+    const { priceMod, value: valueStr } = card.dataset;
+    const value = parseFloat(valueStr || "");
+    if (priceMod === undefined || Number.isNaN(value)) {
+      throw new Error(
+        `Couldn't read data from card ${card.id}: ${stringify({
+          priceMod,
+          value: valueStr,
+        })}`
+      );
+    }
     return { priceMod, value };
   }
 
