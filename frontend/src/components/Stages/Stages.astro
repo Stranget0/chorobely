@@ -1,0 +1,14 @@
+---
+import { stages } from "./mock";
+import Stage from "../Stage/Stage.astro";
+---
+
+<script>
+  import { stage } from "../../utils/stages";
+
+  import { initializeStage } from "./stageProgression";
+
+  if (stage.current) initializeStage(stage.current);
+</script>
+
+{stages.map((props, i) => <Stage {...props} initiallyShown={i === 0} />)}
