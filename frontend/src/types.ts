@@ -1,5 +1,11 @@
 export type PriceMod = "+" | "-" | "/" | "*";
-export type Card = { id: string; title: string; value: number; image: string };
+export type Card = {
+  id: string;
+  title: string;
+  value: number;
+  image: string;
+  textColor?: string;
+};
 export type Stage = {
   id: string;
   title: string;

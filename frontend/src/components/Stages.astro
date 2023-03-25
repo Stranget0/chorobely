@@ -3,4 +3,4 @@ import { stages } from "../mock";
 import Stage from "./Stage.astro";
 ---
 
-{stages.map((props) => <Stage {...props} />)}
+{stages.map((props, i) => <Stage {...props} initiallyShown={i === 0} />)}

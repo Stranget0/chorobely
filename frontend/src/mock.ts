@@ -16,45 +16,77 @@ export const stages: Stage[] = [
     priceMod: "+",
     options: [
       {
-        id: "card-1",
+        id: "card-1-1",
         image: getRandomImage("monster1.1"),
         title: "Option A2",
         value: 10,
+        textColor: "white",
       },
       {
-        id: "card-2",
+        id: "card-1-2",
         image: getRandomImage("monster1.2"),
         title: "Option A2",
         value: 20,
+        textColor: "white",
       },
       {
-        id: "card-3",
+        id: "card-1-3",
         image: getRandomImage("monster1.3"),
         title: "Option A2",
         value: 30,
+        textColor: "white",
       },
       {
-        id: "card-4",
+        id: "card-1-4",
         image: getRandomImage("monster1.1"),
         title: "Option A2",
         value: 10,
+        textColor: "white",
       },
     ],
   },
-  // {
-  //   title: "Option B lorem dolor in mod lorem dolor in mod lorem dolor in mod lorem dolor in mod ",
-  //   priceMod: "*",
-  //   options: [
-  //     { image: getRandomImage("monster2.1"), title: "Option B1", value: 1 },
-  //   ],
-  // },
-  // {
-  //   title: "Option B lorem dolor in mod lorem dolor in mod lorem dolor in mod lorem dolor in mod ",
-  //   priceMod: "*",
-  //   options: [
-  //     { image: getRandomImage("monster2.1"), title: "Option B1", value: 1 },
-  //     { image: getRandomImage("monster2.2"), title: "Option B2", value: 1.1 },
-  //     { image: getRandomImage("monster2.3"), title: "Option B3", value: 1.2 },
-  //   ],
-  // },
+  {
+    id: "stage-2",
+    title:
+      "Option B lorem dolor in mod lorem dolor in mod lorem dolor in mod lorem dolor in mod ",
+    priceMod: "*",
+    options: [
+      {
+        id: "card-2-1",
+        image: getRandomImage("monster2.1"),
+        title: "Option B1",
+        value: 1,
+        textColor: "white",
+      },
+    ],
+  },
+  {
+    id: "stage-3",
+    title:
+      "Option B lorem dolor in mod lorem dolor in mod lorem dolor in mod lorem dolor in mod ",
+    priceMod: "*",
+    options: [
+      {
+        id: "stage-3-1",
+        image: getRandomImage("monster2.1"),
+        title: "Option B1",
+        value: 1,
+        textColor: "white",
+      },
+      {
+        id: "stage-3-2",
+        image: getRandomImage("monster2.2"),
+        title: "Option B2",
+        value: 1.1,
+        textColor: "white",
+      },
+      {
+        id: "stage-3-3",
+        image: getRandomImage("monster2.3"),
+        title: "Option B3",
+        value: 1.2,
+        textColor: "white",
+      },
+    ],
+  },
 ];

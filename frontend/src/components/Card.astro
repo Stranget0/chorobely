@@ -3,17 +3,17 @@ import type { Card, Stage } from "../types";
 import getCssUrl from "../utils/getCssUrl";
 
 type Props = Card & Pick<Stage, "priceMod">;
-const { id, title, value, image, priceMod } = Astro.props;
+const { id, title, value, image, priceMod, textColor } = Astro.props;
 const backgroundImage = getCssUrl(image);
 ---
 
 <li
   id={id}
-  style={{ backgroundImage }}
+  style={{ backgroundImage, color: textColor }}
   class='card bg-cover w-40 flex justify-items-stretch rounded-xl px-4 py-3 aspect-card bg-stone-200'
   data-price-mod={priceMod}
   data-value={value}
 >
   <h3 class='w-full my-2'>{title}</h3>
-	<h4 class="price"></h4>
+  <h4 class='price'></h4>
 </li>
