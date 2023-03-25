@@ -1,13 +1,15 @@
-import { Cards } from "./Cards";
-import { stage } from "./stages";
+import { Cards } from "../Card/Cards";
+import { stage } from "../../utils/stages";
 
 const choices: string[] = [];
 
+function handleCard(card: HTMLElement) {
+  chooseCard(card.id);
+}
+
 export function initializeStage(stageElement: HTMLElement) {
   if (stageElement) {
-    Cards.getFrom(stageElement).addHandlers("click", (card) =>
-      chooseCard(card.id)
-    );
+    Cards.getFrom(stageElement).addHandlers("click", handleCard);
   }
 }
 
@@ -17,9 +19,7 @@ function handleNextStage(): boolean {
     const currentStage = stage.toNext();
     if (currentStage) {
       const cards = Cards.getFrom(currentStage);
-      cards.addHandlers("click", (card) => {
-        chooseCard(card.id);
-      });
+      cards.addHandlers("click", handleCard);
       return true;
     }
   }

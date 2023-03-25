@@ -1,6 +1,6 @@
 ---
-import type { Card, Stage } from "../types";
-import getCssUrl from "../utils/getCssUrl";
+import type { Card, Stage } from '../../types';
+import getCssUrl from '../../utils/getCssUrl';
 
 type Props = Card & Pick<Stage, "priceMod">;
 const { id, title, value, image, priceMod, textColor } = Astro.props;

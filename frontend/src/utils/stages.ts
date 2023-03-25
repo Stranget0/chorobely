@@ -13,10 +13,16 @@ export const stage = {
   },
 
   hide() {
-    this.current?.classList.add("hidden");
+    const currentStage = this.current;
+    if (currentStage) {
+      currentStage.classList.add("hidden");
+    }
   },
 
   show() {
-    this.current?.classList.remove("hidden");
+    const currentStage = this.current;
+    if (currentStage) {
+      currentStage.classList.remove("hidden");
+    }
   },
 };

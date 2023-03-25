@@ -1,4 +1,4 @@
-import type { Stage } from "./types";
+import type { Stage } from "../../types";
 
 function getRandomImage(
   id: string,
