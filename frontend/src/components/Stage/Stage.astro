@@ -1,6 +1,6 @@
 ---
-import type { Stage } from '../../types';
-import Card from '../Card/Card.astro';
+import type { Stage } from "../../types";
+import Card from "../Card/Card.astro";
 
 interface Props extends Stage {
   initiallyShown: boolean;
@@ -8,6 +8,31 @@ interface Props extends Stage {
 
 const { options, priceMod, title, initiallyShown } = Astro.props;
 ---
+
+<script>
+  import useMainPageStore, {
+    subscribeToCurrentStage,
+  } from "../../stores/mainPage/mainPage";
+
+  import { Cards } from "../Card/Cards";
+
+  const { selectCard, initialize } = useMainPageStore.getState();
+
+  let cleanCards: VoidFunction | null = null;
+  subscribeToCurrentStage((stage, prevStage) => {
+    cleanCards?.();
+    if (prevStage) {
+      prevStage.classList.add("hidden");
+    }
+    if (stage) {
+      stage.classList.remove("hidden");
+      const cards = Cards.getFrom(stage);
+      cleanCards = cards.addHandlers("click", selectCard);
+    } else console.error("No stage found")
+  });
+
+  initialize(Array.from(document.querySelectorAll(".stage")));
+</script>
 
 <div
   class:list={[

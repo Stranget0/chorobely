@@ -4,29 +4,6 @@ import Stage from "../Stage/Stage.astro";
 import Price from "../Price/Price.astro";
 ---
 
-<script>
-  import useMainPageStore from "../../stores/mainPage/mainPage";
-  import { stage } from "../../utils/stages";
-  import { Cards } from "../Card/Cards";
-  import {
-    handleNextStage,
-    initializeStage,
-    makeChoice,
-  } from "./stageProgression";
-
-  function stageChoiceHandler(card: HTMLElement) {
-    makeChoice(card.id);
-    const { priceMod, value } = Cards.getDataFromCard(card);
-    const { modifyPrice } = useMainPageStore.getState();
-    modifyPrice(priceMod, value);
-    handleNextStage(stageChoiceHandler);
-  }
-
-  if (stage.current) {
-    initializeStage(stage.current, stageChoiceHandler);
-  }
-</script>
-
 <header>
   <Price />
 </header>

@@ -18,5 +18,8 @@
 		"tailwindcss": "^3.2.7",
 		"vue": "^3.2.47",
 		"zustand": "^4.3.6"
+	},
+	"devDependencies": {
+		"simple-zustand-devtools": "^1.1.0"
 	}
 }
