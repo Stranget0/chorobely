@@ -5,9 +5,9 @@ import Price from "../Price/Price.astro";
 ---
 
 <script>
+  import useMainPageStore from "../../stores/mainPage/mainPage";
   import { stage } from "../../utils/stages";
   import { Cards } from "../Card/Cards";
-  import { getCalculatedPrice, setPriceAmount } from "../Price/price-client";
   import {
     handleNextStage,
     initializeStage,
@@ -17,10 +17,9 @@ import Price from "../Price/Price.astro";
   function stageChoiceHandler(card: HTMLElement) {
     makeChoice(card.id);
     const { priceMod, value } = Cards.getDataFromCard(card);
-    console.log(priceMod, value);
-    setPriceAmount(getCalculatedPrice(priceMod, value));
-    const cards = handleNextStage(stageChoiceHandler);
-    cards?.updateCardPrices();
+    const { modifyPrice } = useMainPageStore.getState();
+    modifyPrice(priceMod, value);
+    handleNextStage(stageChoiceHandler);
   }
 
   if (stage.current) {

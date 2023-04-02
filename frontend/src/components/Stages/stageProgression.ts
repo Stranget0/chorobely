@@ -2,6 +2,7 @@ import { CardHandler, Cards } from "../Card/Cards";
 import { stage } from "../../utils/stages";
 
 const choices: string[] = [];
+let cleanCardListeners: VoidFunction | null = null;
 
 export function initializeStage(
   stageElement: HTMLElement,
@@ -9,22 +10,21 @@ export function initializeStage(
 ) {
   if (stageElement) {
     const cards = Cards.getFrom(stageElement);
-    cards.addHandlers("click", handleCard);
-		cards.updateCardPrices()
-	}
+    cleanCardListeners = cards.addHandlers("click", handleCard);
+  }
 }
 
-export function handleNextStage(handleCard: CardHandler): Cards | null {
+export function handleNextStage(handleCard: CardHandler) {
   const oldStage = stage.current;
   if (oldStage) {
+    cleanCardListeners!();
     const currentStage = stage.toNext();
     if (currentStage) {
       const cards = Cards.getFrom(currentStage);
-      cards.addHandlers("click", handleCard);
-      return cards;
+      cleanCardListeners = cards.addHandlers("click", handleCard);
     }
-  }
-  return null;
+    // Clear memory
+  } else cleanCardListeners = null;
 }
 
 export function makeChoice(cardId: string) {

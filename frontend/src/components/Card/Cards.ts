@@ -1,13 +1,5 @@
 import type { Card, Stage } from "../../types";
 import stringify from "../../utils/stringify";
-import { getCalculatedPrice } from "../Price/price-client";
-
-// TODO: implement cleaning of listeners?
-// type Clean = {
-//   node: HTMLElement;
-//   event: keyof HTMLElementEventMap;
-//   listener: (event: keyof HTMLElementEventMap) => void;
-// };
 
 type Elements = NodeListOf<HTMLElement> | null;
 
@@ -24,8 +16,6 @@ type CardData = Pick<Card & Stage, "value" | "priceMod">;
 export class Cards {
   elements: Elements = null;
 
-  // cleanArr: Clean[] = [];
-
   constructor(elements: Cards["elements"]) {
     this.elements = elements;
   }
@@ -34,24 +24,15 @@ export class Cards {
     type: T,
     handler: CardHandler<T>
   ) {
+    const cleanArr: VoidFunction[] = [];
     if (this.elements) {
       for (const card of this.elements.values()) {
         const listener: Listener<T> = (e) => handler(card, e);
         card.addEventListener(type, listener);
+        cleanArr.push(() => card.removeEventListener(type, listener));
       }
     }
-  }
-
-  updateCardPrices() {
-    if (this?.elements) {
-      for (const card of this.elements) {
-        const priceElement = card.querySelector(".price");
-        if (priceElement) {
-          const { priceMod, value } = Cards.getDataFromCard(card);
-          priceElement.textContent = getCalculatedPrice(priceMod, value) + "";
-        }
-      }
-    }
+    return () => cleanArr.forEach((clean) => clean());
   }
 
   static getDataFromCard(card: HTMLElement): CardData {
