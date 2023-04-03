@@ -49,7 +49,7 @@ const { options, priceMod, title, initiallyShown } = Astro.props;
   ]}
 >
   <h2 class='mb-auto'>{title}</h2>
-  <div class='flex mb-auto w-full justify-center flex-wrap gap-4 px-2'>
+  <div class='flex mb-auto motion-safe:animate-appear w-full justify-center flex-wrap gap-4 px-2'>
     {options.map((card) => <Card {...card} priceMod={priceMod} />)}
   </div>
 </div>
