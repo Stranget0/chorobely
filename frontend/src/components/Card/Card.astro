@@ -1,16 +1,19 @@
 ---
-import type { Card, Stage } from '../../types';
-import getCssUrl from '../../utils/getCssUrl';
+import type { Card, Stage } from "../../types";
+import getCssUrl from "../../utils/getCssUrl";
 
-type Props = Card & Pick<Stage, "priceMod">;
+type Props = Card & Pick<Stage, "priceMod"> & { index: number; length: number };
 const { id, title, value, image, priceMod, textColor } = Astro.props;
 const backgroundImage = getCssUrl(image);
 ---
 
 <li
   id={id}
-  style={{ backgroundImage, color: textColor }}
-  class='card motion-safe:animate-appearReversed bg-cover w-40 flex justify-items-stretch rounded-xl px-4 py-3 aspect-card bg-stone-200'
+  style={{
+    backgroundImage,
+    color: textColor,
+  }}
+  class='card motion-safe:animate-appear-reversed-300 bg-cover w-40 flex justify-items-stretch rounded-xl px-4 py-3 aspect-card bg-stone-200'
   data-price-mod={priceMod}
   data-value={value}
 >
