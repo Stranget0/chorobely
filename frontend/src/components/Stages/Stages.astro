@@ -1,12 +1,14 @@
 ---
 import { stages } from "./mock";
-import Stage from "../Stage/Stage.astro";
+import Stage from "./Stage.astro";
 import Price from "../Price/Price.astro";
+import Choices from "../Choices/Choices";
 ---
 
 <header>
   <Price />
 </header>
-<main>
+<main class='absolute bottom-0 left-0 right-0 top-32 overflow-hidden'>
+  <Choices client:idle />
   {stages.map((props, i) => <Stage {...props} initiallyShown={i === 0} />)}
 </main>

@@ -28,7 +28,7 @@ const { options, priceMod, title, initiallyShown } = Astro.props;
       stage.classList.remove("hidden");
       const cards = Cards.getFrom(stage);
       cleanCards = cards.addHandlers("click", selectCard);
-    } else console.error("No stage found")
+    } else console.error("No stage found");
   });
 
   initialize(Array.from(document.querySelectorAll(".stage")));
@@ -37,19 +37,18 @@ const { options, priceMod, title, initiallyShown } = Astro.props;
 <div
   class:list={[
     "stage",
-    "absolute",
-    "bottom-2",
-    "left-0",
-    "right-0",
-    "top-32",
     "flex",
     "flex-col",
-    "justify-between",
+    "justify-around",
+    "bg-slate-400",
+		"h-full",
     { hidden: !initiallyShown },
   ]}
 >
-  <h2 class='mb-auto'>{title}</h2>
-  <div class='flex mb-auto motion-safe:animate-appear w-full justify-center flex-wrap gap-4 px-2'>
-    {options.map((card) => <Card {...card} priceMod={priceMod} />)}
+  <h2 class='justify-around'>{title}</h2>
+  <div
+    class='flex motion-safe:animate-appear-300 w-full justify-center flex-wrap gap-4 px-2'
+  >
+    {options.map((card, i) => <Card {...card} priceMod={priceMod} index={i} length={options.length} />)}
   </div>
 </div>

@@ -15,10 +15,11 @@ export const customizationSlice: StateCreator<CustomizationSlice> = (
   choices: [],
   stages: [],
   initialize: (stages) => set({ stages }),
- 
+
   selectCard: (card) => set({ choices: [...get().choices, card] }),
   revert: (steps = 1) => {
-    const choices = get().choices.slice(0, -steps);
-    return set({ choices });
+    return set(({ choices: ch }) => ({
+      choices: ch.slice(0, ch.length - steps),
+    }));
   },
 });

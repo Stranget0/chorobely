@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { createStore } from "zustand/vanilla";
 import { subscribeWithSelector } from "zustand/middleware";
 import { PriceSlice, priceSlice } from "./slices/price";
 import { CustomizationSlice, customizationSlice } from "./slices/customization";
@@ -7,7 +7,7 @@ import { mountStoreDevtool } from "simple-zustand-devtools";
 
 type State = PriceSlice & CustomizationSlice;
 
-const useMainPageStore = create(
+const mainPageStore = createStore(
   // Enables selector optimizations for vanilla javascript subscribe
   subscribeWithSelector<State>((...a) => ({
     // Slices
@@ -16,7 +16,7 @@ const useMainPageStore = create(
   }))
 );
 
-export default useMainPageStore;
+export default mainPageStore;
 
 // #region Subscriptions
 export function subscribeToCurrentStage(
@@ -25,7 +25,7 @@ export function subscribeToCurrentStage(
     previousStage: HTMLDivElement | undefined
   ) => void
 ) {
-  return useMainPageStore.subscribe(
+  return mainPageStore.subscribe(
     (state) => getStageFromState(state),
     handler
   );
@@ -33,5 +33,5 @@ export function subscribeToCurrentStage(
 // #endregion
 
 if (import.meta.env.MODE === "development") {
-  mountStoreDevtool("Main Page", useMainPageStore);
+  mountStoreDevtool("Main Page", mainPageStore);
 }
