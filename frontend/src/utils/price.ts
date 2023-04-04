@@ -25,5 +25,5 @@ export function getCalculatedPrice(
       throw new Error(`Invalid priceMod: ${priceMod}`);
     }
   }
-  return price;
+  return Math.round(price * 100) / 100;
 }

@@ -5,10 +5,11 @@ import Price from "../Price/Price.astro";
 import Choices from "../Choices/Choices";
 ---
 
-<header>
-  <Price />
+<header class="flex flex-col gap-8 p-4 bg-stone-300">
+	<Choices client:idle />
 </header>
-<main class='absolute bottom-0 left-0 right-0 top-32 overflow-hidden'>
-  <Choices client:idle />
+<main class=''>
+	<Price />
   {stages.map((props, i) => <Stage {...props} initiallyShown={i === 0} />)}
+	<Stage title="Thank you!"/>
 </main>

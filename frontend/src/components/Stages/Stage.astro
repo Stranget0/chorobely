@@ -2,21 +2,22 @@
 import type { Stage } from "../../types";
 import Card from "../Card/Card.astro";
 
-interface Props extends Stage {
-  initiallyShown: boolean;
+interface Props extends Partial<Stage> {
+  initiallyShown?: boolean;
 }
 
-const { options, priceMod, title, initiallyShown } = Astro.props;
+const { options = [], priceMod = "+", title, initiallyShown } = Astro.props;
 ---
 
 <script>
-  import useMainPageStore, {
+  import mainPageStore, {
     subscribeToCurrentStage,
   } from "../../stores/mainPage/mainPage";
+  import { getCalculatedPrice } from "../../utils/price";
 
   import { Cards } from "../Card/Cards";
 
-  const { selectCard, initialize } = useMainPageStore.getState();
+  const { selectCard, initialize, modifyPrice } = mainPageStore.getState();
 
   let cleanCards: VoidFunction | null = null;
   subscribeToCurrentStage((stage, prevStage) => {
@@ -25,9 +26,25 @@ const { options, priceMod, title, initiallyShown } = Astro.props;
       prevStage.classList.add("hidden");
     }
     if (stage) {
+      const { price } = mainPageStore.getState();
       stage.classList.remove("hidden");
       const cards = Cards.getFrom(stage);
-      cleanCards = cards.addHandlers("click", selectCard);
+      cleanCards = cards.addHandlers("click", (card) => {
+        const { priceMod, value } = Cards.getDataFromCard(card);
+        selectCard(card);
+        modifyPrice(priceMod, value);
+      });
+      cards.elements?.forEach((c) => {
+        const { priceMod, value } = Cards.getDataFromCard(c);
+        const priceNode = c.querySelector(".price");
+        if (priceNode) {
+          const newPrice = getCalculatedPrice(price, priceMod, value);
+          const difference = newPrice - price;
+          priceNode.textContent = `${
+            !difference ? "" : difference > 0 ? "+" : "-"
+          } ${!difference ? "-" : Math.abs(difference)}`;
+        }
+      });
     } else console.error("No stage found");
   });
 
@@ -39,16 +56,25 @@ const { options, priceMod, title, initiallyShown } = Astro.props;
     "stage",
     "flex",
     "flex-col",
-    "justify-around",
-    "bg-slate-400",
-		"h-full",
+    "gap-16",
     { hidden: !initiallyShown },
   ]}
 >
-  <h2 class='justify-around'>{title}</h2>
-  <div
-    class='flex motion-safe:animate-appear-300 w-full justify-center flex-wrap gap-4 px-2'
-  >
-    {options.map((card, i) => <Card {...card} priceMod={priceMod} index={i} length={options.length} />)}
+  <h2 class='p-4 motion-safe:animate-appear-300'>{title}</h2>
+  <div class='overflow-x-auto'>
+    <div
+      class='flex motion-safe:animate-appear-300 w-full justify-center flex-wrap gap-4'
+    >
+      {
+        options.map((card, i) => (
+          <Card
+            {...card}
+            priceMod={priceMod}
+            index={i}
+            length={options.length}
+          />
+        ))
+      }
+    </div>
   </div>
 </div>

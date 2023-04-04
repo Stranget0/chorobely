@@ -2,5 +2,20 @@
 import { priceAmountId } from "./constants";
 ---
 
-<h2>Price</h2>
-<h3 id={priceAmountId}>0</h3>
+<script>
+  import mainPageStore from "../../stores/mainPage/mainPage";
+  import { priceAmountId } from "./constants";
+
+  const priceNode = document.getElementById(priceAmountId)!;
+
+  mainPageStore.subscribe(
+    ({ price }) => price,
+    (price) => {
+      priceNode.textContent = price + "";
+    }
+  );
+</script>
+<div class='text-left p-4'>
+  <h2 class=''>Price</h2>
+  <h3 id={priceAmountId}>0</h3>
+</div>
