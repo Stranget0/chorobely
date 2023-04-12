@@ -13,39 +13,45 @@ const { options = [], priceMod = "+", title, initiallyShown } = Astro.props;
   import mainPageStore, {
     subscribeToCurrentStage,
   } from "../../stores/mainPage/mainPage";
-  import { getCalculatedPrice } from "../../utils/price";
-
+  import { addListBoxBehaviour } from "../../utils/listBox";
   import { Cards } from "../Card/Cards";
 
   const { selectCard, initialize, modifyPrice } = mainPageStore.getState();
 
-  let cleanCards: VoidFunction | null = null;
+  function cardHandler(card: HTMLElement) {
+    const { priceMod, value } = Cards.getDataFromCard(card);
+    selectCard(card);
+    modifyPrice(priceMod, value);
+  }
+
+  let clean: VoidFunction | null = null;
   subscribeToCurrentStage((stage, prevStage) => {
-    cleanCards?.();
+    clean?.();
+    clean = () => {};
     if (prevStage) {
       prevStage.classList.add("hidden");
     }
     if (stage) {
       const { price } = mainPageStore.getState();
-      stage.classList.remove("hidden");
+      const newCleanArr: VoidFunction[] = [];
       const cards = Cards.getFrom(stage);
-      cleanCards = cards.addHandlers("click", (card) => {
-        const { priceMod, value } = Cards.getDataFromCard(card);
-        selectCard(card);
-        modifyPrice(priceMod, value);
-      });
-      cards.elements?.forEach((c) => {
-        const { priceMod, value } = Cards.getDataFromCard(c);
-        const priceNode = c.querySelector(".price");
-        if (priceNode) {
-          const newPrice = getCalculatedPrice(price, priceMod, value);
-          const difference = newPrice - price;
-          priceNode.textContent = `${
-            !difference ? "" : difference > 0 ? "+" : "-"
-          } ${!difference ? "-" : Math.abs(difference)}`;
-        }
-      });
-    } else console.error("No stage found");
+
+      stage.classList.remove("hidden");
+
+      if (stage.role === "listBox") {
+        const { cleanListBoxListeners } = addListBoxBehaviour(
+          stage,
+          "horizontal"
+        );
+        newCleanArr.push(cleanListBoxListeners);
+      }
+
+      cards.updatePrices(price);
+      const { cleanCards } = cards.addHandlers("click", cardHandler);
+      newCleanArr.push(cleanCards);
+
+      clean = () => newCleanArr.forEach((c) => c());
+    }
   });
 
   initialize(Array.from(document.querySelectorAll(".stage")));
@@ -62,8 +68,9 @@ const { options = [], priceMod = "+", title, initiallyShown } = Astro.props;
 >
   <h2 class='p-4 motion-safe:animate-appear-300'>{title}</h2>
   <div class='overflow-x-auto'>
-    <div
+    <ul
       class='flex motion-safe:animate-appear-300 w-full justify-center flex-wrap gap-4'
+      role='listbox'
     >
       {
         options.map((card, i) => (
@@ -75,6 +82,6 @@ const { options = [], priceMod = "+", title, initiallyShown } = Astro.props;
           />
         ))
       }
-    </div>
+    </ul>
   </div>
 </div>

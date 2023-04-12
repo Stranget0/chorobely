@@ -1,4 +1,5 @@
 import type { Card, Stage } from "../../types";
+import { getCalculatedPrice } from "../../utils/price";
 import stringify from "../../utils/stringify";
 
 type Elements = NodeListOf<HTMLElement> | null;
@@ -32,7 +33,21 @@ export class Cards {
         cleanArr.push(() => card.removeEventListener(type, listener));
       }
     }
-    return () => cleanArr.forEach((clean) => clean());
+    return { cleanCards: () => cleanArr.forEach((clean) => clean()) };
+  }
+
+  updatePrices(fromPrice: number) {
+    this.elements?.forEach((c) => {
+      const { priceMod, value } = Cards.getDataFromCard(c);
+      const priceNode = c.querySelector(".price");
+      if (priceNode) {
+        const newPrice = getCalculatedPrice(fromPrice, priceMod, value);
+        const difference = newPrice - fromPrice;
+        priceNode.textContent = `${
+          !difference ? "" : difference > 0 ? "+" : "-"
+        } ${!difference ? "-" : Math.abs(difference)}`;
+      }
+    });
   }
 
   static getDataFromCard(card: HTMLElement): CardData {
