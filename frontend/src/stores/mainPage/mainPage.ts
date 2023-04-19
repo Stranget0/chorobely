@@ -10,7 +10,6 @@ type State = PriceSlice & CustomizationSlice;
 const mainPageStore = createStore(
   // Enables selector optimizations for vanilla javascript subscribe
   subscribeWithSelector<State>((...a) => ({
-    // Slices
     ...priceSlice(...a),
     ...customizationSlice(...a),
   }))

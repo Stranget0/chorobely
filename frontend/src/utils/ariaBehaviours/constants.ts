@@ -1,2 +1,2 @@
-export const hasMouse = matchMedia("pointer:fine");
+export const hasMouse = matchMedia("(pointer:fine)").matches;
 

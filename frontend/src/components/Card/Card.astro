@@ -5,24 +5,25 @@ import getCssUrl from "../../utils/getCssUrl";
 type Props = Card & Pick<Stage, "priceMod"> & { index: number; length: number };
 const { id, title, value, image, priceMod, textColor, index, length } =
   Astro.props;
+
 const backgroundImage = getCssUrl(image);
 ---
 
 <li
   id={id}
-  style={{
-    backgroundImage,
-    color: textColor,
-  }}
-  class='relative motion-safe:animate-appear-reversed-300 bg-cover bg-center w-40 flex flex-col justify-between rounded-xl px-4 py-3 aspect-card bg-stone-200'
+  class='relative motion-safe:animate-appear-reversed-300 bg-cover bg-center w-40 flex flex-col justify-between px-4 py-3 rounded-xl aspect-card bg-stone-200'
 >
   <button
+    style={{
+      backgroundImage,
+      color: textColor,
+    }}
     role='option'
     aria-setsize={length}
     aria-posinset={index + 1}
     data-price-mod={priceMod}
     data-value={value}
-    class='card absolute inset-0'
+    class='card absolute inset-0 rounded-xl'
   >
     <h3 class='w-full my-2'>{title}</h3>
     <h4 class='price'></h4>

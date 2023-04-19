@@ -13,7 +13,7 @@ const { options = [], priceMod = "+", title, initiallyShown } = Astro.props;
   import mainPageStore, {
     subscribeToCurrentStage,
   } from "../../stores/mainPage/mainPage";
-  import { addListBoxBehaviour } from "../../utils/listBox";
+
   import { Cards } from "../Card/Cards";
 
   const { selectCard, initialize, modifyPrice } = mainPageStore.getState();
@@ -24,10 +24,28 @@ const { options = [], priceMod = "+", title, initiallyShown } = Astro.props;
     modifyPrice(priceMod, value);
   }
 
+  function importAndAddListBox(target: HTMLElement, cleanArr: VoidFunction[]) {
+    let isCanceled = false;
+    cleanArr.push(() => {
+      isCanceled = true;
+    });
+    import("../../utils/ariaBehaviours/listBox").then(
+      ({ addListBoxBehaviour }) => {
+        if (isCanceled) return;
+        const { cleanListBoxListeners } = addListBoxBehaviour(
+          target,
+          "horizontal",
+          { focusOnInactive: true }
+        );
+        cleanArr.push(cleanListBoxListeners);
+      }
+    );
+  }
+
   let clean: VoidFunction | null = null;
   subscribeToCurrentStage((stage, prevStage) => {
     clean?.();
-    clean = () => {};
+    clean = null;
     if (prevStage) {
       prevStage.classList.add("hidden");
     }
@@ -37,13 +55,9 @@ const { options = [], priceMod = "+", title, initiallyShown } = Astro.props;
       const cards = Cards.getFrom(stage);
 
       stage.classList.remove("hidden");
-
-      if (stage.role === "listBox") {
-        const { cleanListBoxListeners } = addListBoxBehaviour(
-          stage,
-          "horizontal"
-        );
-        newCleanArr.push(cleanListBoxListeners);
+      const listbox = stage.querySelector<HTMLElement>(".listbox");
+      if (listbox?.role === "listbox") {
+        importAndAddListBox(stage, newCleanArr);
       }
 
       cards.updatePrices(price);
@@ -69,7 +83,7 @@ const { options = [], priceMod = "+", title, initiallyShown } = Astro.props;
   <h2 class='p-4 motion-safe:animate-appear-300'>{title}</h2>
   <div class='overflow-x-auto'>
     <ul
-      class='flex motion-safe:animate-appear-300 w-full justify-center flex-wrap gap-4'
+      class='listbox flex motion-safe:animate-appear-300 w-full justify-center flex-wrap gap-4'
       role='listbox'
     >
       {
