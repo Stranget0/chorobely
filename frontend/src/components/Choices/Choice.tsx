@@ -1,4 +1,5 @@
 import mainPageStore from "../../stores/mainPage/mainPage";
+import classNames from "classnames";
 
 interface Props {
   children: HTMLElement | undefined;
@@ -11,11 +12,16 @@ const Choice = ({ children, index }: Props) => {
     const revertSteps = choices.length - index;
     revert(revertSteps);
   };
+
+  const backgroundImage = children?.style.backgroundImage;
+
   return (
     <button
       onClick={handleClick}
-      style={{ "background-image": children?.style.backgroundImage }}
-      class='radius rounded-full aspect-square w-16 animate-appear-300 bg-stone-100 bg-cover bg-center'
+      style={{ "background-image": backgroundImage }}
+      tabIndex={backgroundImage ? 0 : -1}
+      aria-hidden={!backgroundImage}
+      class={classNames('radius rounded-full aspect-square w-16 animate-appear-300 bg-stone-100 bg-cover bg-center', !backgroundImage && "pointer-events-none")}
     />
   );
 };
