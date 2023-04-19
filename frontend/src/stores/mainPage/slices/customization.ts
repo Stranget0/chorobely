@@ -1,6 +1,8 @@
 import type { StateCreator } from "zustand";
+import { getPriceFromState } from "../utils";
 
 export interface CustomizationSlice {
+  price: number;
   choices: HTMLElement[];
   stages: HTMLDivElement[];
   initialize(stages: HTMLDivElement[]): void;
@@ -12,14 +14,24 @@ export const customizationSlice: StateCreator<CustomizationSlice> = (
   set,
   get
 ) => ({
+  price: 0,
   choices: [],
   stages: [],
   initialize: (stages) => set({ stages }),
 
-  selectCard: (card) => set({ choices: [...get().choices, card] }),
+  selectCard: (card) => {
+    const choices = [...get().choices, card];
+    const price = getPriceFromState({ choices });
+    set({ choices, price });
+  },
   revert: (steps = 1) => {
-    return set(({ choices: ch }) => ({
-      choices: ch.slice(0, ch.length - steps),
-    }));
+    set(({ choices: ch }) => {
+      const choices = ch.slice(0, ch.length - steps);
+      const price = getPriceFromState({ choices });
+			return {
+        choices,
+        price,
+      };
+    });
   },
 });

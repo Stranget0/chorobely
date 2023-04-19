@@ -10,19 +10,13 @@ const { options = [], priceMod = "+", title, initiallyShown } = Astro.props;
 ---
 
 <script>
-  import mainPageStore, {
-    subscribeToCurrentStage,
-  } from "../../stores/mainPage/mainPage";
+  import mainPageStore from "../../stores/mainPage/mainPage";
+import { getStageFromState } from "../../stores/mainPage/utils";
 
   import { Cards } from "../Card/Cards";
 
-  const { selectCard, initialize, modifyPrice } = mainPageStore.getState();
+  const { selectCard, initialize } = mainPageStore.getState();
 
-  function cardHandler(card: HTMLElement) {
-    const { priceMod, value } = Cards.getDataFromCard(card);
-    selectCard(card);
-    modifyPrice(priceMod, value);
-  }
 
   function importAndAddListBox(target: HTMLElement, cleanArr: VoidFunction[]) {
     let isCanceled = false;
@@ -43,7 +37,7 @@ const { options = [], priceMod = "+", title, initiallyShown } = Astro.props;
   }
 
   let clean: VoidFunction | null = null;
-  subscribeToCurrentStage((stage, prevStage) => {
+  mainPageStore.subscribe(getStageFromState,(stage, prevStage) => {
     clean?.();
     clean = null;
     if (prevStage) {
@@ -61,7 +55,7 @@ const { options = [], priceMod = "+", title, initiallyShown } = Astro.props;
       }
 
       cards.updatePrices(price);
-      const { cleanCards } = cards.addHandlers("click", cardHandler);
+      const { cleanCards } = cards.addHandlers("click", selectCard);
       newCleanArr.push(cleanCards);
 
       clean = () => newCleanArr.forEach((c) => c());
