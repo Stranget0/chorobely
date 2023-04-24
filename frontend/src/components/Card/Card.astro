@@ -23,7 +23,7 @@ const backgroundImage = getCssUrl(image);
     aria-posinset={index + 1}
     data-price-mod={priceMod}
     data-value={value}
-    class='card absolute inset-0 rounded-xl'
+    class='card absolute inset-0 rounded-xl w-full motion-safe:transition-[opacity,transform] ease-out opacity-80 hover:scale-105 hover:opacity-100 focus:scale-105 focus:opacity-100'
   >
     <h3 class='title w-full my-2'>{title}</h3>
     <h4 class='price'></h4>

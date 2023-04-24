@@ -1,0 +1,17 @@
+---
+import { Icon } from "astro-icon";
+---
+
+<script>
+  import mainPageStore from "../../stores/mainPage/mainPage";
+
+  const undoButton = document.getElementById("choices-undo");
+  if (undoButton) {
+    undoButton.addEventListener("click", () => {
+      mainPageStore.getState().revert();
+    });
+  }
+</script>
+<button id='choices-undo' class="w-8 transition-opacity ease-out duration-150 opacity-60 focus:opacity-100 hover:opacity-100">
+  <Icon name='undo' />
+</button>

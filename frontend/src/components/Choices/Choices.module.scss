@@ -1,0 +1,20 @@
+.choice {
+  --visibility: 0;
+  position: relative;
+  &::after {
+    @media (prefers-reduced-motion: no-preference) {
+      transition: opacity 0.15s ease-out, transform 0.15s ease-in;
+    }
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    opacity: calc(var(--visibility) * .8);
+    transform: translate(-50%, -50%) scale(var(--visibility));
+    content: attr(aria-label);
+  }
+  &:hover,
+  &:focus {
+    --visibility: 1;
+    transition-timing-function: ease-out;
+  }
+}

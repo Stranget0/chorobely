@@ -6,10 +6,14 @@ import Choices from "../Choices/Choices";
 import Options from "./Options.astro";
 import StageTitle from "./StageTitle.astro";
 import SubmitForm from "../SubmitForm/SubmitForm.astro";
+import Revert from "../Choices/Revert.astro";
 ---
 
-<header class='flex flex-col gap-8 p-4 bg-stone-300'>
-  <Choices client:idle />
+<header class='flex flex-col gap-8 p-4 bg-stone-100'>
+  <div class='w-full min-h-[4rem] flex justify-center flex-wrap gap-4 z-10'>
+    <Choices client:idle />
+		<Revert />
+  </div>
 </header>
 <main class='h-full grow flex flex-col'>
   <Price />
