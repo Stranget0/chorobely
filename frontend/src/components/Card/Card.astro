@@ -10,8 +10,8 @@ const backgroundImage = getCssUrl(image);
 ---
 
 <li
-  id={id}
   class='relative motion-safe:animate-appear-reversed-300 bg-cover bg-center w-40 flex flex-col justify-between px-4 py-3 rounded-xl aspect-card bg-stone-200'
+  id={id}
 >
   <button
     style={{
@@ -25,7 +25,7 @@ const backgroundImage = getCssUrl(image);
     data-value={value}
     class='card absolute inset-0 rounded-xl'
   >
-    <h3 class='w-full my-2'>{title}</h3>
+    <h3 class='title w-full my-2'>{title}</h3>
     <h4 class='price'></h4>
   </button>
 </li>

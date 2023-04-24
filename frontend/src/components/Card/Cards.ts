@@ -61,7 +61,8 @@ export class Cards {
       );
     }
 		const backgroundImage = card.style.backgroundImage;
-    return { priceMod, value, backgroundImage };
+		const title = card.querySelector(".title")?.textContent || "Brak tytułu";
+    return { priceMod, value, backgroundImage, title};
   }
 
   static getFrom(

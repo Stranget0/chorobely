@@ -3,9 +3,9 @@ import { getPriceFromState } from "../utils";
 import type { Card, Stage } from "../../../types";
 import { Cards } from "../../../components/Card/Cards";
 
-type CardData = Pick<Stage, 'priceMod'> & Pick<Card, 'value'>
+type CardData = Pick<Stage, 'priceMod'> & Pick<Card, 'value' | "title">
 
-export interface Choice extends CardData{
+export interface Choice extends CardData {
 	backgroundImage?: string;
 }
 

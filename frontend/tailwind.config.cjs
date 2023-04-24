@@ -1,4 +1,3 @@
-const plugin = require("tailwindcss/plugin");
 const defaultTheme = require("tailwindcss/defaultTheme");
 
 const durationValuesMs = [0, 75, 100, 150, 200, 300, 500, 700, 1000];
@@ -30,7 +29,9 @@ module.exports = {
       aspectRatio: {
         card: "2 / 3",
       },
+      screens: {
+        "pointer-fine": { raw: "(pointer:fine)" },
+      },
     },
   },
-  plugins: [],
 };

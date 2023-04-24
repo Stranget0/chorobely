@@ -1,15 +1,58 @@
 ---
+import ButtonFill from "../../globalStyles/ButtonFill.astro";
 import AnimatedDetails from "../AnimatedDetails/AnimatedDetails.astro";
-
 ---
 
-<form id="submit-order" class="h-full grow w-96 max-h-96 flex justify-between flex-col gap-4 max-w-full p-4 mx-auto motion-safe:animate-appear-300">
-	<div class="flex justify-center flex-col">
-		<label for="submit-order-email">Twój email</label>
-		<input id="submit-order-email" type="email" name="email" class="p-2 rounded bg-stone-200" required/>
-	</div>
-	<AnimatedDetails summary="Extra information" class="grow mb-2 mt-4">
-		<textarea id="submit-order-extra-info" name="extra-info" class="p-2 rounded bg-stone-200 resize-none w-full h-full grow"></textarea>
-	</AnimatedDetails>
-	<button type="submit" class="bg-stone-400 text-stone-100 p-4 rounded mt-auto">Send email</button>
+<script>
+  import mainPageStore from "../../stores/mainPage/mainPage";
+
+  import { getPriceFromState } from "../../stores/mainPage/utils";
+
+  interface FormElements extends HTMLFormControlsCollection {
+    email: HTMLInputElement;
+    details: HTMLTextAreaElement;
+  }
+  interface UsernameFormElement extends HTMLFormElement {
+    readonly elements: FormElements;
+  }
+
+  const form = document.getElementById("submit-order") as UsernameFormElement;
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = form.elements.email.value;
+      const details = form.elements.details.value;
+      const choices = mainPageStore
+        .getState()
+        .choices.reduce((accStr, { title }, i, arr) => {
+          const price = getPriceFromState({ choices: arr.slice(0, i + 1) });
+          return `${accStr}\n${title} - ${price}`;
+        }, "");
+
+      console.log({ email, details, choices });
+    });
+  }
+</script>
+<form
+  id='submit-order'
+  class='h-full grow w-96 max-h-96 flex justify-between flex-col gap-4 max-w-full p-4 mx-auto motion-safe:animate-appear-300'
+>
+  <div class='flex justify-center flex-col'>
+    <label for='submit-order-email'>Twój email</label>
+    <input
+      id='submit-order-email'
+      type='email'
+      name='email'
+      class='p-2 rounded bg-stone-200'
+      required
+    />
+  </div>
+  <AnimatedDetails summary='Extra information' class='grow mb-2 mt-4'>
+    <textarea
+      id='submit-order-details'
+      name='details'
+      class='p-2 rounded bg-stone-200 resize-none w-full h-full grow'
+    ></textarea>
+  </AnimatedDetails>
+  <ButtonFill type='submit' />
 </form>

@@ -1,0 +1,41 @@
+---
+interface Props{
+	type: "submit" | "reset" | 'button'
+}
+const {type} = Astro.props
+---
+<style lang='scss' is:global>
+    $max-scale: 1.3;
+    .button-fill {
+      position: relative;
+      --mask-scale: #{$max-scale};
+      --easing: ease-in;
+
+      @media (pointer: fine) {
+        --mask-scale: 0;
+        &:hover,
+        &:focus {
+          --mask-scale: #{$max-scale};
+          --easing: ease-out;
+        }
+      }
+
+      &::before {
+        content: "";
+        @media (prefers-reduced-motion: no-preference) {
+          transition: transform 0.3s var(--easing);
+        }
+        transform: translate(-50%, -50%) scale(var(--mask-scale));
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        left: 50%;
+        z-index: -1;
+      }
+    }
+</style>
+<button
+    type={type}
+    class='button-fill overflow-hidden bg-stone-400 sm:bg-transparent before:bg-stone-400 before:rounded-full before:aspect-square focus:text-stone-100 hover:text-stone-100 pointer-fine:text-stone-700 border-2 border-stone-400 p-4 rounded'
+    >Send email</button
+  >
