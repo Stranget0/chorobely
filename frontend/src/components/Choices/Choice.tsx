@@ -26,7 +26,7 @@ const Choice = ({ choiceData, index }: Props) => {
       class={classNames(
         "radius rounded-full aspect-square w-16 animate-appear-300 bg-white bg-cover bg-center",
         choiceData &&
-          "after:rounded-xl after:p-2 after:whitespace-nowrap after:bg-stone-700 after:text-white",
+          "after:rounded-xl after:p-2 after:whitespace-nowrap after:bg-secondary-500 after:text-white",
         !choiceData?.backgroundImage && "pointer-events-none",
         choiceData && classes.choice
       )}

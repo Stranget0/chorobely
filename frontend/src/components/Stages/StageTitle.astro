@@ -2,10 +2,16 @@
 interface Props {
   title: string;
   class?: string;
-	description?: string;
+  description?: string;
 }
-const { title,description, class: className } = Astro.props;
+const { title, description, class: className } = Astro.props;
 ---
 
-<h2 class={`p-4 motion-safe:animate-appear-300 ${className || ""}`}>{title}</h2>
+<h2
+  class={`p-4 motion-safe:animate-appear-300 text-3xl mb-4 font-thin uppercase max-w-5xl mx-auto ${
+    className || ""
+  }`}
+>
+  {title}
+</h2>
 {description && <p>{description}</p>}
