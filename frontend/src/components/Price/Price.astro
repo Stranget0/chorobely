@@ -9,12 +9,23 @@ import { priceAmountId } from "./constants";
   const priceNode = document.getElementById(priceAmountId)!;
 
   const setPrice = (price: number) => {
-    priceNode.textContent = price + "";
+    const oldNode = priceNode.lastElementChild;
+		console.log(oldNode);
+    if (oldNode) {
+			oldNode.classList.replace("animate-show-down-200", "animate-hide-down-200")
+      oldNode.addEventListener("animationend", () => {
+        oldNode.remove();
+      });
+    }
+    const newNode = document.createElement("div");
+    newNode.className = "animate-show-down-200 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2";
+    newNode.textContent = price + "";
+    priceNode.append(newNode);
   };
   setPrice(mainPageStore.getState().price);
   mainPageStore.subscribe(({ price }) => price, setPrice);
 </script>
 <div class='py-4 mx-auto'>
-  <h2 class="text-xl font-light uppercase text-primary-700">Price</h2>
-  <h3 class="text-secondary-800 font-medium" id={priceAmountId}></h3>
+  <h2 class='text-xl font-light uppercase text-primary-700 -translate-1/2'>Price</h2>
+  <h3 class='text-secondary-800 font-medium relative' id={priceAmountId}></h3>
 </div>
