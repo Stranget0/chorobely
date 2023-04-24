@@ -1,0 +1,11 @@
+---
+interface Props {
+  title: string;
+  class?: string;
+	description?: string;
+}
+const { title,description, class: className } = Astro.props;
+---
+
+<h2 class={`p-4 motion-safe:animate-appear-300 ${className || ""}`}>{title}</h2>
+{description && <p>{description}</p>}

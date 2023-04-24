@@ -6,6 +6,7 @@ export function getStageFromState({
   stages,
   choices,
 }: Pick<MainPageState, "stages" | "choices">) {
+	
   return stages[choices.length];
 }
 
@@ -13,7 +14,7 @@ export function getPriceFromState({
   choices,
 }: Pick<MainPageState, "choices">): number {
   return choices.reduce((price, choice) => {
-    const { priceMod, value } = Cards.getDataFromCard(choice);
+    const { priceMod, value } = choice;
     return getCalculatedPrice(price, priceMod, value);
   }, 0);
 }

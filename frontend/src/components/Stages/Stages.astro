@@ -3,13 +3,23 @@ import { stages } from "./mock";
 import Stage from "./Stage.astro";
 import Price from "../Price/Price.astro";
 import Choices from "../Choices/Choices";
+import Options from "./Options.astro";
+import StageTitle from "./StageTitle.astro";
+import SubmitForm from "../SubmitForm/SubmitForm.astro";
 ---
 
-<header class="flex flex-col gap-8 p-4 bg-stone-300">
-	<Choices client:idle />
+<header class='flex flex-col gap-8 p-4 bg-stone-300'>
+  <Choices client:idle />
 </header>
-<main class=''>
-	<Price />
-  {stages.map((props, i) => <Stage {...props} initiallyShown={i === 0} />)}
-	<Stage title="Thank you!"/>
+<main class="h-full">
+  <Price />
+  {
+    stages.map(({ title, options, priceMod }, i) => (
+      <Stage initiallyShown={i === 0}>
+				<StageTitle title={title}/>
+        <Options priceMod={priceMod} options={options} />
+      </Stage>
+    ))
+  }
+  <Stage class="h-full"><StageTitle title="Thank you! Confirm your order."/><SubmitForm /></Stage>
 </main>

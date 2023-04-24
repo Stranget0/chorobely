@@ -1,0 +1,26 @@
+---
+import type { Stage } from '../../types';
+import Card from '../Card/Card.astro';
+
+type Props = Partial<Pick<Stage, "options" | 'priceMod'>>
+
+const { options = [], priceMod = "+" } = Astro.props;
+---
+
+<div class='overflow-x-auto'>
+	<ul
+		class='listbox flex motion-safe:animate-appear-300 w-full justify-center flex-wrap gap-4'
+		role='listbox'
+	>
+		{
+			options.map((card, i) => (
+				<Card
+					{...card}
+					priceMod={priceMod}
+					index={i}
+					length={options.length}
+				/>
+			))
+		}
+	</ul>
+</div>

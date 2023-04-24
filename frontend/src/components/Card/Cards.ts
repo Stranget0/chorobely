@@ -1,4 +1,4 @@
-import type { Card, Stage } from "../../types";
+import type { Choice } from "../../stores/mainPage/slices/customization";
 import { getCalculatedPrice } from "../../utils/price";
 import stringify from "../../utils/stringify";
 
@@ -12,7 +12,6 @@ type Listener<T extends keyof HTMLElementEventMap> = (
   e: HTMLElementEventMap[T]
 ) => void;
 
-type CardData = Pick<Card & Stage, "value" | "priceMod">;
 
 export class Cards {
   elements: Elements = null;
@@ -50,7 +49,7 @@ export class Cards {
     });
   }
 
-  static getDataFromCard(card: HTMLElement): CardData {
+  static getDataFromCard(card: HTMLElement): Choice {
     const { priceMod, value: valueStr } = card.dataset;
     const value = parseFloat(valueStr || "");
     if (priceMod === undefined || Number.isNaN(value)) {
@@ -61,13 +60,14 @@ export class Cards {
         })}`
       );
     }
-    return { priceMod, value };
+		const backgroundImage = card.style.backgroundImage;
+    return { priceMod, value, backgroundImage };
   }
 
   static getFrom(
     cardContainer: Pick<HTMLElement, "querySelectorAll"> = document
   ) {
-    const cardNodes = cardContainer.querySelectorAll<HTMLDivElement>(".card");
+    const cardNodes = cardContainer.querySelectorAll<HTMLElement>(".card");
     return new Cards(cardNodes);
   }
 }

@@ -1,22 +1,19 @@
 ---
-import type { Stage } from "../../types";
-import Card from "../Card/Card.astro";
-
-interface Props extends Partial<Stage> {
+interface Props {
   initiallyShown?: boolean;
+  class?: string;
 }
 
-const { options = [], priceMod = "+", title, initiallyShown } = Astro.props;
+const { initiallyShown, class: className } = Astro.props;
 ---
 
 <script>
   import mainPageStore from "../../stores/mainPage/mainPage";
-import { getStageFromState } from "../../stores/mainPage/utils";
+  import { getStageFromState } from "../../stores/mainPage/utils";
 
   import { Cards } from "../Card/Cards";
 
   const { selectCard, initialize } = mainPageStore.getState();
-
 
   function importAndAddListBox(target: HTMLElement, cleanArr: VoidFunction[]) {
     let isCanceled = false;
@@ -37,32 +34,41 @@ import { getStageFromState } from "../../stores/mainPage/utils";
   }
 
   let clean: VoidFunction | null = null;
-  mainPageStore.subscribe(getStageFromState,(stage, prevStage) => {
+
+  mainPageStore.subscribe(getStageFromState, (stage, prevStage) => {
     clean?.();
     clean = null;
-    if (prevStage) {
-      prevStage.classList.add("hidden");
-    }
+    const { price, stages } = mainPageStore.getState();
+    
+		const stageToHide = prevStage
+      ? prevStage
+      : stages[0] !== stage
+      ? stages[0]
+      : undefined;
+
+    if (stageToHide) stageToHide.classList.add("hidden");
     if (stage) {
-      const { price } = mainPageStore.getState();
       const newCleanArr: VoidFunction[] = [];
       const cards = Cards.getFrom(stage);
-
       stage.classList.remove("hidden");
       const listbox = stage.querySelector<HTMLElement>(".listbox");
       if (listbox?.role === "listbox") {
         importAndAddListBox(stage, newCleanArr);
       }
-
       cards.updatePrices(price);
-      const { cleanCards } = cards.addHandlers("click", selectCard);
-      newCleanArr.push(cleanCards);
 
       clean = () => newCleanArr.forEach((c) => c());
     }
   });
 
-  initialize(Array.from(document.querySelectorAll(".stage")));
+  const stages = Array.from(document.querySelectorAll<HTMLElement>(".stage"));
+
+  for (const stage of stages) {
+    const cards = Cards.getFrom(stage);
+    cards.addHandlers("click", selectCard);
+  }
+	
+  initialize(stages);
 </script>
 
 <div
@@ -70,26 +76,9 @@ import { getStageFromState } from "../../stores/mainPage/utils";
     "stage",
     "flex",
     "flex-col",
-    "gap-16",
+    className,
     { hidden: !initiallyShown },
   ]}
 >
-  <h2 class='p-4 motion-safe:animate-appear-300'>{title}</h2>
-  <div class='overflow-x-auto'>
-    <ul
-      class='listbox flex motion-safe:animate-appear-300 w-full justify-center flex-wrap gap-4'
-      role='listbox'
-    >
-      {
-        options.map((card, i) => (
-          <Card
-            {...card}
-            priceMod={priceMod}
-            index={i}
-            length={options.length}
-          />
-        ))
-      }
-    </ul>
-  </div>
+  <slot />
 </div>
