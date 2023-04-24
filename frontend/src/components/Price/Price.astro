@@ -8,14 +8,13 @@ import { priceAmountId } from "./constants";
 
   const priceNode = document.getElementById(priceAmountId)!;
 
-  mainPageStore.subscribe(
-    ({ price }) => price,
-    (price) => {
-      priceNode.textContent = price + "";
-    }
-  );
+  const setPrice = (price: number) => {
+    priceNode.textContent = price + "";
+  };
+  setPrice(mainPageStore.getState().price);
+  mainPageStore.subscribe(({ price }) => price, setPrice);
 </script>
 <div class='py-4 mx-auto'>
   <h2>Price</h2>
-  <h3 id={priceAmountId}>0</h3>
+  <h3 id={priceAmountId}></h3>
 </div>

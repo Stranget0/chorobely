@@ -18,6 +18,7 @@ const mainPageStore = createStore(
       name: "main-page-storage",
       partialize: ({ choices, price }) => ({ choices, price }),
       storage: createJSONStorage(() => sessionStorage),
+      onRehydrateStorage: () => console.log,
     }
   )
 );
