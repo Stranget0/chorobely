@@ -16,7 +16,6 @@ export function addListBoxBehaviour(
   const listBoxOptions = Array.from(
     listBox.querySelectorAll<HTMLButtonElement>("button[role=option]")
   );
-  listBoxOptions[0]?.focus();
   function listener(e: KeyboardEvent): void {
 		const activeElement = document.activeElement;
 
