@@ -14,7 +14,7 @@ export default function Choices() {
       : [];
 
   return (
-    <div class='w-full min-h-[4rem] flex flex-wrap gap-4 z-10'>
+    <div class='w-full min-h-[4rem] flex justify-center flex-wrap gap-4 z-10'>
       <For each={choices()}>
         {(_, i) => <Choice index={i()}>{choices()[i()]}</Choice>}
       </For>
