@@ -1,0 +1,54 @@
+---
+interface Props {
+  summary: string;
+}
+---
+
+<style lang='scss'>
+  %transition-transform {
+    transition: transform 0.2s ease-out;
+  }
+
+  .details-button {
+    &::before {
+      content: "▼";
+      display: inline-block;
+      margin-right: 0.5rem;
+      transform: rotate(-90deg);
+      @extend %transition-transform;
+    }
+
+    & + .content {
+      transform: scaleY(0);
+      transform-origin: top;
+
+      @extend %transition-transform;
+    }
+
+    &.open {
+      &::before {
+        transform: none;
+      }
+
+      + .content {
+        transform: scaleY(1);
+      }
+    }
+  }
+</style>
+
+<script>
+  const detailsButtons =
+    document.querySelectorAll<HTMLElement>(".details-button");
+
+  for (const button of detailsButtons) {
+    button.addEventListener("click", () => {
+      button.classList.toggle("open");
+    });
+  }
+</script>
+
+<section class='details-container'>
+  <button type='button' class='details-button'>Extra information</button>
+  <div class='content'><slot /></div>
+</section>
