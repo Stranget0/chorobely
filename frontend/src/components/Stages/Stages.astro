@@ -11,15 +11,17 @@ import SubmitForm from "../SubmitForm/SubmitForm.astro";
 <header class='flex flex-col gap-8 p-4 bg-stone-300'>
   <Choices client:idle />
 </header>
-<main class="h-full">
+<main class='h-full grow flex flex-col'>
   <Price />
   {
     stages.map(({ title, options, priceMod }, i) => (
       <Stage initiallyShown={i === 0}>
-				<StageTitle title={title}/>
+        <StageTitle title={title} />
         <Options priceMod={priceMod} options={options} />
       </Stage>
     ))
   }
-  <Stage class="h-full"><StageTitle title="Thank you! Confirm your order."/><SubmitForm /></Stage>
+  <Stage class='h-full grow'>
+    <StageTitle title='Thank you! Confirm your order.' /><SubmitForm />
+  </Stage>
 </main>

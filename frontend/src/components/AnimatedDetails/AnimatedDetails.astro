@@ -1,7 +1,9 @@
 ---
 interface Props {
   summary: string;
+  class?: string;
 }
+const { summary, class: className } = Astro.props;
 ---
 
 <style lang='scss'>
@@ -48,7 +50,7 @@ interface Props {
   }
 </script>
 
-<section class='details-container'>
-  <button type='button' class='details-button'>Extra information</button>
-  <div class='content'><slot /></div>
+<section class:list={["details-container flex flex-col", className]}>
+  <button type='button' class='details-button'>{summary}</button>
+  <div class='content flex flex-col grow'><slot /></div>
 </section>
