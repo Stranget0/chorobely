@@ -43,7 +43,7 @@ import AnimatedDetails from "../AnimatedDetails/AnimatedDetails.astro";
       id='submit-order-email'
       type='email'
       name='email'
-      class='p-2 rounded bg-stone-200'
+      class='p-2 rounded bg-stone-200 motion-safe:transition hover:scale-105 focus:scale-105'
       required
     />
   </div>
@@ -51,7 +51,7 @@ import AnimatedDetails from "../AnimatedDetails/AnimatedDetails.astro";
     <textarea
       id='submit-order-details'
       name='details'
-      class='p-2 rounded bg-stone-200 resize-none w-full h-full grow'
+      class='p-2 rounded bg-stone-200 resize-none w-full h-full grow motion-safe:transition hover:scale-105 focus:scale-105'
     ></textarea>
   </AnimatedDetails>
   <ButtonFill type='submit' />

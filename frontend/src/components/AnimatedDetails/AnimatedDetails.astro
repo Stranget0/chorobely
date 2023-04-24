@@ -51,6 +51,6 @@ const { summary, class: className } = Astro.props;
 </script>
 
 <section class:list={["details-container flex flex-col", className]}>
-  <button type='button' class='details-button'>{summary}</button>
+  <button type='button' class='details-button motion-safe:transition hover:scale-105 focus:scale-105'>{summary}</button>
   <div class='content flex flex-col grow'><slot /></div>
 </section>
