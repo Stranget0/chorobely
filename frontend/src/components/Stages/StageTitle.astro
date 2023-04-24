@@ -7,11 +7,13 @@ interface Props {
 const { title, description, class: className } = Astro.props;
 ---
 
-<h2
-  class={`p-4 motion-safe:animate-appear-300 text-3xl mb-4 font-thin uppercase max-w-5xl mx-auto ${
-    className || ""
-  }`}
->
-  {title}
-</h2>
-{description && <p>{description}</p>}
+<div class="mb-4 p-4">
+	<h2
+		class={`motion-safe:animate-appear-300 text-3xl font-thin uppercase max-w-3xl mx-auto ${
+			className || ""
+		}`}
+	>
+		{title}
+	</h2>
+	{description && <p class="motion-safe:animate-appear-300 font-thin max-w-xl mx-auto">{description}</p>}
+</div>
