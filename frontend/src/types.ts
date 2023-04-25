@@ -10,6 +10,5 @@ export type Stage = {
   title: string;
   bgColor?: string;
   priceMod: string;
-  textColor?: string;
   options: Card[];
 };
